@@ -5,11 +5,11 @@ function MithrilHistoryRouter () {
   this._router = null
 }
 
-MithrilHistoryRouter.prototype.router = function router (rootElm, defaultRoute, routes) {
+MithrilHistoryRouter.prototype.router = function router (rootElm, defaultRoute, routesHash) {
   this._router = HttpHash()
 
-  for (var url in routes) {
-    this._router.set(url, routes[url])
+  for (var url in routesHash) {
+    this._router.set(url, routesHash[url])
   }
 
   this.dispatch = function () {
