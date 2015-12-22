@@ -1,6 +1,6 @@
 {
   "name": "mithril-history-router",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An alternative to `m.route`. Exposes the History API using a thin Stack abstraction with routing utility functions",
   "main": "index.js",
   "dependencies": {
