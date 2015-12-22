@@ -1,0 +1,37 @@
+{
+  "name": "mithril-router",
+  "version": "0.0.0",
+  "description": "A dropin replacement for m.route",
+  "main": "index.js",
+  "dependencies": {
+    "http-hash": "^2.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "wzrd": "^1.3.1"
+  },
+  "peerDependencies": {
+    "mithril": "^0.2.2"
+  },
+  "scripts": {
+    "test": "wzrd test.js --pushstate"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/emilbayes/mithril-router.git"
+  },
+  "keywords": [
+    "mithril",
+    "route",
+    "router",
+    "routing",
+    "m.route",
+    "http-hash"
+  ],
+  "author": "Emil Bay <github@tixz.dk>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/emilbayes/mithril-router/issues"
+  },
+  "homepage": "https://github.com/emilbayes/mithril-router#readme"
+}
