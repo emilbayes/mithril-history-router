@@ -44,7 +44,7 @@ MithrilHistoryRouter.prototype.pop = function pop () {
   return {
     url: window.url,
     state: window.state,
-    route: this._router.get(window.url)
+    route: this._router.get(window.location.pathname)
   }
 }
 
