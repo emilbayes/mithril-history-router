@@ -54,11 +54,20 @@ Routes can contain `:param` and `*` splats. See [`http-hash`](https://github.com
 
 #### `r.push(url, state)`
 
+Push a new history entry. Allows to pass a state object as well which is persisted
+to the history stack. Note that this state element may be `600B` serializes at most.
+
 #### `r.replace(url, state)`
+
+Replace the current History entry and redraw
 
 #### `r.pop()`
 
+Equivalent to pressing back
+
 #### `r.peek()`
+
+Return `{url, state}`
 
 ### Utilities
 
@@ -66,10 +75,16 @@ Routes can contain `:param` and `*` splats. See [`http-hash`](https://github.com
 
 Similar to `{config: m.route}` except it allows you to pass a state object and
 choose how the browser navigates using one of the stack methods. Defaults to `r.push`.
-`state` is passed to the operation.
+`state` is passed to the `operation`.
 
 #### `r.state()`
 
+Return the current `window.history.state` or `null`
+
 #### `r.params()`
 
+Return a object with the current path parameters or `null`
+
 #### `r.splat()`
+
+Return the current splat or `null`
