@@ -2,101 +2,91 @@ var HttpHash = require('http-hash')
 var m = require('mithril')
 
 function MithrilRouter () {
-  var _router
-  var _dispatch
+  this._router = null
+}
+
+MithrilRouter.prototype.router = function router (rootElm, defaultRoute, routes) {
+  this._router = HttpHash()
+
+  for (var url in routes) {
+    this._router.set(url, routes[url])
+  }
+
+  this.dispatch = function () {
+    var resolvedRoute = this._router.get(window.location.pathname)
+
+    if (resolvedRoute.handler === null) {
+      this.replace(defaultRoute)
+      return
+    }
+
+    m.mount(rootElm, resolvedRoute.handler)
+  }
+
+  this.dispatch()
+  window.addEventListener('popstate', this.dispatch.bind(this), false)
+}
+
+MithrilRouter.prototype.dispatch = function noop () {}
+
+// Stack Operations
+MithrilRouter.prototype.peek = function peek () {
+  return {
+    url: window.url,
+    state: window.state
+  }
+}
+
+MithrilRouter.prototype.pop = function pop () {
+  window.history.back()
+  this.dispatch()
 
   return {
-    router: router,
-
-    // Routing utils
-    anchor: anchor,
-    params: params,
-    state: state,
-    splat: splat,
-
-    // Stack operations
-    peek: peek,
-    replace: replace,
-    push: push,
-    pop: pop
+    url: window.url,
+    state: window.state,
+    route: this._router.get(window.url)
   }
+}
 
-  function router (rootElm, defaultRoute, routes) {
-    if (routes[defaultRoute] == null) throw new Error('defaultRoute must be present in routes')
+MithrilRouter.prototype.push = function push (url, state) {
+  window.history.pushState(state, null, url)
+  this.dispatch()
+}
 
-    _router = HttpHash()
+MithrilRouter.prototype.replace = function replace (url, state) {
+  window.history.replaceState(state, null, url)
+  this.dispatch()
+}
 
-    _dispatch = function () {
-      var url = window.location.pathname
+// Routing Helpers
+MithrilRouter.prototype.anchor = function anchor (state, op) {
+  var self = this
+  op = op || self.push
 
-      var resolvedRoute = _router.get(url)
-
-      console.log(resolvedRoute)
-
-      if (resolvedRoute.handler === null) {
-        // window.location = defaultRoute
-        return
-      }
-
-      m.mount(rootElm, resolvedRoute.handler)
-    }
-
-    for (var url in routes) {
-      _router.set(url, routes[url])
-    }
-
-    _dispatch()
-
-    window.addEventListener('popstate', _dispatch)
-  }
-
-  function anchor (state, shouldReplace) {
-    return function (elm, isInit, context, vdom) {
+  return function config (elm, isInitialized, context, vdom) {
+    if (!isInitialized) {
       elm.removeEventListener('click', clickHandler, false)
       elm.addEventListener('click', clickHandler, false)
+    }
 
-      function clickHandler (e) {
-        e.preventDefault()
+    function clickHandler (e) {
+      e.preventDefault()
 
-        ;(shouldReplace === true ? replace : push)(vdom.attrs.href, state)
-      }
+      op.call(self, vdom.attrs.href, state)
     }
   }
+}
 
-  function peek () {
-    return {
-      url: window.url,
-      state: window.state,
-      route: _router.get(window.url)
-    }
-  }
+MithrilRouter.prototype.params = function params () {
+  return this._router.get(window.location.pathname).params
+}
 
-  function push (url, state) {
-    window.history.pushState(state, null, url)
-    _dispatch()
-  }
+MithrilRouter.prototype.state = function state () {
+  return window.history.state
+}
 
-  function replace (url, state) {
-    window.history.replaceState(state, null, url)
-    _dispatch()
-  }
-
-  function pop () {
-    window.history.back()
-    _dispatch()
-  }
-
-  function params () {
-    return _router.get(window.location.pathname).params
-  }
-
-  function state () {
-    return window.history.state
-  }
-
-  function splat () {
-    return _router.get(window.location.pathname).splat
-  }
+MithrilRouter.prototype.splat = function splat () {
+  return this._router.get(window.location.pathname).splat
 }
 
 module.exports = new MithrilRouter()
