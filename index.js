@@ -39,7 +39,6 @@ MithrilHistoryRouter.prototype.peek = function peek () {
 
 MithrilHistoryRouter.prototype.pop = function pop () {
   window.history.back()
-  this.dispatch()
 
   return {
     url: window.url,
