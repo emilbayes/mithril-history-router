@@ -1,7 +1,8 @@
 `mithril-history-router`
 ================
 
-A dropin replacement for `m.route`
+An alternative to `m.route`. Exposes the History API using a thin Stack abstraction
+with routing utility functions
 
 Installation
 ------------
