@@ -1,5 +1,5 @@
 {
-  "name": "mithril-router",
+  "name": "mithril-history-router",
   "version": "0.0.0",
   "description": "A dropin replacement for m.route",
   "main": "index.js",

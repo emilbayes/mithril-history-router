@@ -1,4 +1,4 @@
-`mithril-router`
+`mithril-history-router`
 ================
 
 A dropin replacement for `m.route`
@@ -9,7 +9,7 @@ Installation
 ```sh
 npm install mithril #peer dependency
 
-npm install --save mithril-router
+npm install --save mithril-history-router
 ```
 
 API
@@ -18,7 +18,7 @@ API
 ```js
 
 var m = require('mithril')
-var r = require('mithril-router')
+var r = require('mithril-history-router')
 
 r.route(document.body, '/', {
   '/': {

@@ -1,11 +1,11 @@
 var HttpHash = require('http-hash')
 var m = require('mithril')
 
-function MithrilRouter () {
+function MithrilHistoryRouter () {
   this._router = null
 }
 
-MithrilRouter.prototype.router = function router (rootElm, defaultRoute, routes) {
+MithrilHistoryRouter.prototype.router = function router (rootElm, defaultRoute, routes) {
   this._router = HttpHash()
 
   for (var url in routes) {
@@ -27,17 +27,17 @@ MithrilRouter.prototype.router = function router (rootElm, defaultRoute, routes)
   window.addEventListener('popstate', this.dispatch.bind(this), false)
 }
 
-MithrilRouter.prototype.dispatch = function noop () {}
+MithrilHistoryRouter.prototype.dispatch = function noop () {}
 
 // Stack Operations
-MithrilRouter.prototype.peek = function peek () {
+MithrilHistoryRouter.prototype.peek = function peek () {
   return {
     url: window.url,
     state: window.state
   }
 }
 
-MithrilRouter.prototype.pop = function pop () {
+MithrilHistoryRouter.prototype.pop = function pop () {
   window.history.back()
   this.dispatch()
 
@@ -48,18 +48,18 @@ MithrilRouter.prototype.pop = function pop () {
   }
 }
 
-MithrilRouter.prototype.push = function push (url, state) {
+MithrilHistoryRouter.prototype.push = function push (url, state) {
   window.history.pushState(state, null, url)
   this.dispatch()
 }
 
-MithrilRouter.prototype.replace = function replace (url, state) {
+MithrilHistoryRouter.prototype.replace = function replace (url, state) {
   window.history.replaceState(state, null, url)
   this.dispatch()
 }
 
 // Routing Helpers
-MithrilRouter.prototype.anchor = function anchor (state, op) {
+MithrilHistoryRouter.prototype.anchor = function anchor (state, op) {
   var self = this
   op = op || self.push
 
@@ -77,17 +77,17 @@ MithrilRouter.prototype.anchor = function anchor (state, op) {
   }
 }
 
-MithrilRouter.prototype.params = function params () {
+MithrilHistoryRouter.prototype.params = function params () {
   return this._router.get(window.location.pathname).params
 }
 
-MithrilRouter.prototype.state = function state () {
+MithrilHistoryRouter.prototype.state = function state () {
   return window.history.state
 }
 
-MithrilRouter.prototype.splat = function splat () {
+MithrilHistoryRouter.prototype.splat = function splat () {
   return this._router.get(window.location.pathname).splat
 }
 
-module.exports = new MithrilRouter()
-module.exports.MithrilRouter = MithrilRouter
+module.exports = new MithrilHistoryRouter()
+module.exports.MithrilHistoryRouter = MithrilHistoryRouter
